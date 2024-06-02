@@ -1,3 +1,4 @@
+// clase que representa un codigo y nombre de una moneda $$$
 class Currency {
     constructor(code, name) {
         this.code = code;
@@ -5,12 +6,19 @@ class Currency {
     }
 }
 
+// clase que maneja la conversion de monedas usando la api
 class CurrencyConverter {
-    constructor() {}
+    constructor(apiUrl) {
+        // inicializa la url base de la apii y un arreglo vacio para monedas
+        this.apiUrl = apiUrl;
+        this.currencies = [];
+    }
 
-    getCurrencies(apiUrl) {}
+    // metodo asincrono que obtiene la lista de monedas disponibles desde la api
+    async getCurrencies(apiUrl) {}
 
-    convertCurrency(amount, fromCurrency, toCurrency) {}
+    // metodo asincrono que convierte monedas a otra
+    async convertCurrency(amount, fromCurrency, toCurrency) {}
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

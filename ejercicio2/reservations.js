@@ -1,6 +1,45 @@
-class Customer {}
+// clase customer
+class Customer {
+    constructor(id, name, email) {
+        // Inicializa propiedades
+        this.id = id; // id del cliente
+        this.name = name; // nombre del cliente
+        this.email = email; // correo del cliente
+    }
 
-class Reservation {}
+    // retorna una cadena con el nombre y correo
+    get info() {
+        return `${this.name} (${this.email})`;
+    }
+}
+
+// clase reservation
+class Reservation {
+    constructor(id, customer, date, guests) {
+        // Inicializa propiedades id, customer, date y guests de la reserva
+        this.id = id; 
+        this.customer = customer;
+
+        // convierto la fecha en un objeto date
+        this.date = new Date(date);
+        this.guests = guests;
+    }
+
+    // retorna cadena con la fecha y hora de la reserva, la info del cliente y el nro de comensales
+    get info() {
+        return `Fecha y hora: ${this.date.toLocaleDateString()}, Cliente: ${this.customer.info}, Numero de comensales: ${this.guests}`;
+    }
+
+    // metodo estatico que valida la fecha de la reserva y la cantidad de comensales
+    static validateReservation(date, guests) {
+        // convierte la fecha de la reserva a un objeto date
+        const reservationDate = new Date(date);
+        // obtiene la fecha actual
+        const currentDate = new Date();
+        // la reserva es valida si la fecha es posterior a la fecha actual y la cantidad de comensales es mayot que 0
+        return reservationDate >= currentDate && guests > 0;
+    }
+}
 
 class Restaurant {
     constructor(name) {

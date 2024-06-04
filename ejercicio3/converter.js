@@ -15,10 +15,34 @@ class CurrencyConverter {
     }
 
     // metodo asincrono que obtiene la lista de monedas disponibles desde la api
-    async getCurrencies(apiUrl) {}
+    async getCurrencies() {
+        try {
+            const response = await fetch(`${this.apiUrl}/currencies`);
+            const data = await response.json();
+            this.currencies = Object.entries(data).map(
+                ([code, name]) => new Currency(code, name)
+            );
+        } catch (error) {
+            console.error("Error fetching currencies", error);
+        }
+    }
 
     // metodo asincrono que convierte monedas a otra
-    async convertCurrency(amount, fromCurrency, toCurrency) {}
+    async convertCurrency(amount, fromCurrency, toCurrency) {
+        if (fromCurrency.code === toCurrency.code) {
+            return amount;
+        }
+        try {
+            const response = await fetch(
+                `${this.apiUrl}/latest?amount=${amount}&from=${fromCurrency.code}&to=${toCurrency.code}`
+            );
+            const data = await response.json();
+            return data.rates[toCurrency.code];
+        } catch (error) {
+            console.error("Error converting curency", error)
+            return null;
+        }
+    }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

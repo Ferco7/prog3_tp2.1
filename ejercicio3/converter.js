@@ -9,7 +9,7 @@ class Currency {
 // clase que maneja la conversion de monedas usando la api
 class CurrencyConverter {
     constructor(apiUrl) {
-        // inicializa la url base de la apii y un arreglo vacio para monedas
+        // inicializa la url base de la api y un arreglo vacio para monedas
         this.apiUrl = apiUrl;
         this.currencies = [];
     }
@@ -17,8 +17,10 @@ class CurrencyConverter {
     // metodo asincrono que obtiene la lista de monedas disponibles desde la api
     async getCurrencies() {
         try {
+            // realiza solicityd get al endpoint /currencies
             const response = await fetch(`${this.apiUrl}/currencies`);
             const data = await response.json();
+            // convierte los datos recibidos en instancia de la clase currency
             this.currencies = Object.entries(data).map(
                 ([code, name]) => new Currency(code, name)
             );
@@ -29,14 +31,17 @@ class CurrencyConverter {
 
     // metodo asincrono que convierte monedas a otra
     async convertCurrency(amount, fromCurrency, toCurrency) {
+        // si las monedas son iguales, retorna lo mismo sin cambios
         if (fromCurrency.code === toCurrency.code) {
             return amount;
         }
         try {
+            // realiza una solicitud get al endpoint /latest con los parametros especificos
             const response = await fetch(
                 `${this.apiUrl}/latest?amount=${amount}&from=${fromCurrency.code}&to=${toCurrency.code}`
             );
             const data = await response.json();
+            // retorna el monto convertido
             return data.rates[toCurrency.code];
         } catch (error) {
             console.error("Error converting curency", error)

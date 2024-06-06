@@ -51,22 +51,24 @@ class CurrencyConverter {
 
     // metodo adicional para obtener la diferencia entre las tasas de cambio de hoy y ayer
     async compareRates(fromCurrency, toCurrency) {
+        // obtiene fecha de ayer y hoy
         const today = new Date().toISOString().split('T')[0];
         const yesterday = new Date(Date.now() - 864e5).toISOString().split('T')[0];
 
+        // reliza solicitudes get para obtener tasa de cambio de ayer y hoy
         const todayResponse = await fetch(`${this.apiUrl}/${today}?from=${fromCurrency.code}&to=${toCurrency.code}`);
         const yesterdayResponse = await fetch(`${this.apiUrl}/${yesterday}?from=${fromCurrency.code}&to=${toCurrency.code}`);
 
         const todayData = await todayResponse.json();
         const yesterdayData = await yesterdayResponse.json();
 
+        // calcula diferencia de cambios entre las tasas
         const todayRate = todayData.rates[toCurrency.code];
         const yesterdayRate = yesterdayData.rates[toCurrency.code];
 
-        return todayRate - yesterdayRate
-
+        return todayRate - yesterdayRate;
     } catch(error) {
-        console.error("Error fetching exchange rate difference:", error)
+        console.error("Error fetching exchange rate difference:", error);
         return null;
     }
 }

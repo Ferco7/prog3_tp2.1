@@ -22,15 +22,17 @@ class Card {
         return cardElement;
     }
 
+    // metodo para cambiar el volteo de la cartaa
     toggleFlip() {
         this.isFlipped = !this.isFlipped;
         if (this.isFlipped) {
-            this.#flip();
+            this.#flip(); // voltea la carta
         } else {
-            this.#unflip();
+            this.#unflip(); // desvoltea
         }
     }
 
+    // meetodo para verificar si la carta actual coincide con otra carta
     matches(otherCard) {
         return this.name === otherCard.name;
     }
@@ -45,6 +47,7 @@ class Card {
         cardElement.classList.remove("flipped");
     }
 }
+
 
 
 class Board {
@@ -72,10 +75,12 @@ class Board {
         this.fixedGridElement.className = `fixed-grid has-${columns}-cols`;
     }
 
+    // metodo para mezclar las cartas
     shuffleCards() {
         this.cards.sort(() => Math.random() - 0.5);
     }
 
+    // metodo para voltear todas las cartas boca abajo
     flipDownAllCards() {
         this.cards.forEach(card => {
             if (card.isFlipped) {
@@ -84,6 +89,7 @@ class Board {
         });
     }
 
+    // metodo para reiniciiar el tablero
     reset() {
         this.shuffleCards();
         this.flipDownAllCards();
@@ -109,6 +115,7 @@ class Board {
 }
 
 
+
 class MemoryGame {
     constructor(board, flipDuration = 500) {
         this.board = board;
@@ -117,7 +124,7 @@ class MemoryGame {
         if (flipDuration < 350 || isNaN(flipDuration) || flipDuration > 3000) {
             flipDuration = 350;
             alert(
-                "La duración de la animación debe estar entre 350 y 3000 ms, se ha establecido a 350 ms"
+                "La duracion de la animacion debe estar entre 350 y 3000 ms, se ha establecido a 350 ms"
             );
         }
         this.flipDuration = flipDuration;
@@ -136,6 +143,7 @@ class MemoryGame {
         }
     }
 
+    // metodo para verificar si las cartas volteadas coinciden
     checkForMatch() {
         const [card1, card2] = this.flippedCards;
         if (card1.matches(card2)) {
@@ -147,6 +155,7 @@ class MemoryGame {
         this.flippedCards = [];
     }
 
+    // meetodo para reiniciar el juego
     resetGame() {
         this.flippedCards = [];
         this.matchedCards = [];
@@ -164,6 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Ruby", img: "./img/Ruby.svg" },
     ];
 
+    // crear cartas duplicadas
     const cards = cardsData.flatMap((data) => [
         new Card(data.name, data.img),
         new Card(data.name, data.img),
@@ -171,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const board = new Board(cards);
     const memoryGame = new MemoryGame(board, 1000);
 
+    // reiniciar el juego al hacer clic en el boton de reinicio
     document.getElementById("restart-button").addEventListener("click", () => {
         memoryGame.resetGame();
     });
